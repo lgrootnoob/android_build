@@ -959,7 +959,7 @@ define build-recoveryramdisk
   $(hide) cat $(INSTALLED_DEFAULT_PROP_TARGET) $(recovery_build_prop) \
           > $(TARGET_RECOVERY_ROOT_OUT)/default.prop
   $(hide) $(SED_INPLACE) 's/ro.build.date.utc=.*/ro.build.date.utc=0/g' $(TARGET_RECOVERY_ROOT_OUT)/default.prop
-  $(hide) $(SED_INPLACE) 's/ro.adb.secure=1/ro.adb.secure=0/g' $(TARGET_RECOVERY_ROOT_OUT)/default.prop
+  $(hide) $(SED_INPLACE) 's/ro.adb.secure=0/ro.adb.secure=0/g' $(TARGET_RECOVERY_ROOT_OUT)/default.prop
 endef
 
 # $(1): output file
@@ -1042,15 +1042,21 @@ PDK_FUSION_SYSIMG_FILES := \
     $(filter-out $(foreach p,$(overridden_packages),$(p) %/$(p).apk), \
         $(ALL_PDK_FUSION_FILES))
 
-INTERNAL_SYSTEMIMAGE_FILES := $(filter $(TARGET_OUT)/%, \
-    $(ALL_PREBUILT) \
-    $(ALL_COPIED_HEADERS) \
-    $(ALL_GENERATED_SOURCES) \
-    $(ALL_DEFAULT_INSTALLED_MODULES) \
-    $(PDK_FUSION_SYSIMG_FILES) \
-    $(RECOVERY_RESOURCE_ZIP))
+#INTERNAL_SYSTEMIMAGE_FILES := $(filter $(TARGET_OUT)/%, \
+#    $(ALL_PREBUILT) \
+#    $(ALL_COPIED_HEADERS) \
+#    $(ALL_GENERATED_SOURCES) \
+#    $(ALL_DEFAULT_INSTALLED_MODULES) \
+#    $(PDK_FUSION_SYSIMG_FILES) \
+#    $(RECOVERY_RESOURCE_ZIP))
+#
+#systemimage-squisher: $(INTERNAL_SYSTEMIMAGE_FILES)
+#	@echo -e ${CL_YLW}"Optimizing PNGs to Shrink ROM Size!"${CL_RST}
+#	$(hide) APKCERTS=$(APKCERTS_FILE) $(SQUISHER_SCRIPT) $@
+#
+#PHONY: systemimage-squisher
 
-
+#FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher
 FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS)
 # -----------------------------------------------------------------
 # installed file list

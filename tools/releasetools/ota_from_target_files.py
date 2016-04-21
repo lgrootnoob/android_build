@@ -1763,7 +1763,10 @@ def main(argv):
         print "--- failed to build incremental; falling back to full ---"
         OPTIONS.incremental_source = None
         common.ZipClose(output_zip)
-
+  android_build_top = os.environ["ANDROID_BUILD_TOP"]
+  cmd = android_build_top+"/vendor/omni/tools/squisher"
+  os.environ["OTAPACKAGE"] = temp_zip_file.name
+  os.system(cmd)
   if not OPTIONS.no_signing:
     SignOutput(temp_zip_file.name, args[1])
     temp_zip_file.close()
